@@ -51,7 +51,7 @@ to create a Makefile.
 Implement commands
 =====
 
-snappy::compress - accepts a string to compress.
+snappy::compress - accepts a string to compress.  
 snappy::decompress - accepts a string to decompress.
 
 
