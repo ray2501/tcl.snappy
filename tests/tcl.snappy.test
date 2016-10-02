@@ -1,0 +1,28 @@
+# tcl.snappy.test --
+#
+#	Tests for tcl.snappy
+#------------------------------------------------------------------------------
+
+if {[lsearch [namespace children] ::tcltest] == -1} {
+    package require tcltest
+    namespace import ::tcltest::*
+}
+
+package require snappy
+
+test snappy_1_1 {
+    Test: Snappy
+} -body {
+    set result 0
+    set test0 "##### Hello snappy @@@@@, @@@@@ I am tickle #####"
+    set test1 [snappy::compress $test0]
+    set test2 [snappy::decompress $test1]
+
+    if {[string equal $test0 $test2]==1} {
+        set result 1
+    }
+} -result {1}
+
+# cleanup
+::tcltest::cleanupTests
+return

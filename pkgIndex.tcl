@@ -1,5 +1,5 @@
 #
 # Tcl package index file
 #
-package ifneeded snappy 0.1 \
-    [list load [file join $dir libsnappy0.1.so] snappy]
+package ifneeded snappy 0.2 \
+    [list load [file join $dir libsnappy0.2.so] snappy]
