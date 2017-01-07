@@ -25,7 +25,7 @@ it aims for very high speeds and reasonable compression.
 
 %build
 export CC=g++
-CFLAGS="%optflags" ./configure \
+./configure \
 	--prefix=%{directory} \
 	--exec-prefix=%{directory} \
 	--libdir=%{directory}/%{_lib}
