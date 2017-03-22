@@ -1,7 +1,7 @@
 tcl.snappy
 =====
 
-[Snappy] (http://google.github.io/snappy/) is a compression/decompression library. It does not aim for maximum
+[Snappy](http://google.github.io/snappy/) is a compression/decompression library. It does not aim for maximum
 compression, or compatibility with any other compression library; instead,
 it aims for very high speeds and reasonable compression.
 
