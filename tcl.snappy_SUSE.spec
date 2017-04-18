@@ -10,8 +10,10 @@ License:       2-Clause BSD license
 Group:         Development/Libraries/Tcl
 Source:        https://sites.google.com/site/ray2501/tcl-snappy/tcl.snappy_0.4.zip
 URL:           https://sites.google.com/site/ray2501/tcl-snappy
-Buildrequires: tcl-devel >= 8.4
-Requires: tcl >= 8.4
+BuildRequires: autoconf
+BuildRequires: make
+BuildRequires: tcl-devel >= 8.4
+Requires:      tcl >= 8.4
 BuildRoot:     %{buildroot}
 
 %description
