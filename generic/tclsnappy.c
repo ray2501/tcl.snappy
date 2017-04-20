@@ -33,8 +33,12 @@ extern "C" {
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "tclsnappy.h"    
+#include "tclsnappy.h"
+#ifdef USE_SYSTEM_SNAPPY
+#include <snappy-c.h>
+#else
 #include "snappy-c.h"
+#endif
 
 #ifdef __cplusplus
 }

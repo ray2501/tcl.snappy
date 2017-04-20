@@ -71,13 +71,31 @@ TEA_SETUP_COMPILER
 # and PKG_TCL_SOURCES.
 #-----------------------------------------------------------------------
 
-TEA_ADD_SOURCES([tclsnappy.c snappy.cc snappy-sinksource.cc snappy-stubs-internal.cc snappy-c.cc])
+TEA_ADD_SOURCES([tclsnappy.c])
 TEA_ADD_HEADERS([])
 TEA_ADD_INCLUDES([])
 TEA_ADD_LIBS([])
 TEA_ADD_CFLAGS([])
 TEA_ADD_STUB_SOURCES([])
 TEA_ADD_TCL_SOURCES([])
+
+#--------------------------------------------------------------------
+# The --with-system-snappy causes the TCL bindings to Snappy to use
+# the system shared library for Snappy.
+#--------------------------------------------------------------------
+AC_ARG_WITH([system-snappy],
+ [AC_HELP_STRING([--with-system-snappy],
+   [use a system-supplied libsnappy (default no)])],
+ [], [with_system_snappy=no])
+
+if test x$with_system_snappy != xno; then
+ AC_CHECK_HEADERS([snappy-c.h],
+   [AC_CHECK_LIB([snappy], [snappy_max_compressed_length],
+     [AC_DEFINE(USE_SYSTEM_SNAPPY)
+      LIBS="$LIBS -lsnappy"])])
+else
+TEA_ADD_SOURCES([snappy.cc snappy-sinksource.cc snappy-stubs-internal.cc snappy-c.cc])
+fi
 
 #--------------------------------------------------------------------
 # __CHANGE__

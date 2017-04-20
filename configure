@@ -735,6 +735,7 @@ ac_subst_files=''
 ac_user_opts='
 enable_option_checking
 with_tcl
+with_system_snappy
 with_tclinclude
 enable_threads
 enable_shared
@@ -1379,6 +1380,7 @@ Optional Packages:
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
   --with-tcl              directory containing tcl configuration
                           (tclConfig.sh)
+  --with-system-snappy    use a system-supplied libsnappy (default no)
   --with-tclinclude       directory containing the public Tcl header files
   --with-celib=DIR        use Windows/CE support library from DIR
 
@@ -5333,7 +5335,7 @@ done
 #-----------------------------------------------------------------------
 
 
-    vars="tclsnappy.c snappy.cc snappy-sinksource.cc snappy-stubs-internal.cc snappy-c.cc"
+    vars="tclsnappy.c"
     for i in $vars; do
 	case $i in
 	    \$*)
@@ -5435,6 +5437,111 @@ done
     done
 
 
+
+#--------------------------------------------------------------------
+# The --with-system-snappy causes the TCL bindings to Snappy to use
+# the system shared library for Snappy.
+#--------------------------------------------------------------------
+
+# Check whether --with-system-snappy was given.
+if test "${with_system_snappy+set}" = set; then :
+  withval=$with_system_snappy;
+else
+  with_system_snappy=no
+fi
+
+
+if test x$with_system_snappy != xno; then
+ for ac_header in snappy-c.h
+do :
+  ac_fn_c_check_header_mongrel "$LINENO" "snappy-c.h" "ac_cv_header_snappy_c_h" "$ac_includes_default"
+if test "x$ac_cv_header_snappy_c_h" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_SNAPPY_C_H 1
+_ACEOF
+ { $as_echo "$as_me:${as_lineno-$LINENO}: checking for snappy_max_compressed_length in -lsnappy" >&5
+$as_echo_n "checking for snappy_max_compressed_length in -lsnappy... " >&6; }
+if ${ac_cv_lib_snappy_snappy_max_compressed_length+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lsnappy  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char snappy_max_compressed_length ();
+int
+main ()
+{
+return snappy_max_compressed_length ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_lib_snappy_snappy_max_compressed_length=yes
+else
+  ac_cv_lib_snappy_snappy_max_compressed_length=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_snappy_snappy_max_compressed_length" >&5
+$as_echo "$ac_cv_lib_snappy_snappy_max_compressed_length" >&6; }
+if test "x$ac_cv_lib_snappy_snappy_max_compressed_length" = xyes; then :
+  $as_echo "#define USE_SYSTEM_SNAPPY 1" >>confdefs.h
+
+      LIBS="$LIBS -lsnappy"
+fi
+
+fi
+
+done
+
+else
+
+    vars="snappy.cc snappy-sinksource.cc snappy-stubs-internal.cc snappy-c.cc"
+    for i in $vars; do
+	case $i in
+	    \$*)
+		# allow $-var names
+		PKG_SOURCES="$PKG_SOURCES $i"
+		PKG_OBJECTS="$PKG_OBJECTS $i"
+		;;
+	    *)
+		# check for existence - allows for generic/win/unix VPATH
+		# To add more dirs here (like 'src'), you have to update VPATH
+		# in Makefile.in as well
+		if test ! -f "${srcdir}/$i" -a ! -f "${srcdir}/generic/$i" \
+		    -a ! -f "${srcdir}/win/$i" -a ! -f "${srcdir}/unix/$i" \
+		    -a ! -f "${srcdir}/macosx/$i" \
+		    ; then
+		    as_fn_error $? "could not find source file '$i'" "$LINENO" 5
+		fi
+		PKG_SOURCES="$PKG_SOURCES $i"
+		# this assumes it is in a VPATH dir
+		i=`basename $i`
+		# handle user calling this before or after TEA_SETUP_COMPILER
+		if test x"${OBJEXT}" != x ; then
+		    j="`echo $i | sed -e 's/\.[^.]*$//'`.${OBJEXT}"
+		else
+		    j="`echo $i | sed -e 's/\.[^.]*$//'`.\${OBJEXT}"
+		fi
+		PKG_OBJECTS="$PKG_OBJECTS $j"
+		;;
+	esac
+    done
+
+
+
+fi
 
 #--------------------------------------------------------------------
 # __CHANGE__
