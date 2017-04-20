@@ -37,6 +37,13 @@ below is an example:
 	$ make
 	$ make install
 
+If your Linux distribution (ex. Debian, Ubuntu, Fedora, and OpenSuSE) includes Snappy,
+tcl.snappy (after v0.5) support to use the system shared library for Snappy.
+
+Below is an example:
+
+	$ ./configure --with-system-snappy=yes
+
 
 WINDOWS BUILD
 =====

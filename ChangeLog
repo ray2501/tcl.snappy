@@ -1,5 +1,6 @@
 2017-04-20  Danilo Chang  <ray2501@gmail.com>
 
+     * Setup version to v0.5
      * Add --with-system-snappy option for configure
 
 2017-02-01  Danilo Chang  <ray2501@gmail.com>
