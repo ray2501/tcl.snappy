@@ -4,11 +4,11 @@
 
 Name:          tcl.snappy
 Summary:       Tcl wrapper for snappy library
-Version:       0.6
+Version:       0.7
 Release:       1
 License:       2-Clause BSD license
 Group:         Development/Libraries/Tcl
-Source:        https://sites.google.com/site/ray2501/tcl-snappy/tcl.snappy_0.6.zip
+Source:        https://sites.google.com/site/ray2501/tcl-snappy/tcl.snappy_0.7.zip
 URL:           https://sites.google.com/site/ray2501/tcl-snappy
 BuildRequires: autoconf
 BuildRequires: make
