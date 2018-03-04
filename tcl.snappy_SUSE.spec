@@ -3,7 +3,7 @@
 %define buildroot %{_tmppath}/%{name}
 
 Name:          tcl.snappy
-Summary:       snappy wrapper for Tcl
+Summary:       Tcl wrapper for snappy library
 Version:       0.6
 Release:       1
 License:       2-Clause BSD license
@@ -17,7 +17,7 @@ Requires:      tcl >= 8.4
 BuildRoot:     %{buildroot}
 
 %description
-snappy wrapper for Tcl.
+It is Tcl wrapper for snappy library.
 
 Snappy is a compression/decompression library. It does not aim for maximum
 compression, or compatibility with any other compression library; instead,
