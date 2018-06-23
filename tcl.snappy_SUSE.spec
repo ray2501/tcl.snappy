@@ -8,7 +8,7 @@ Version:       0.7
 Release:       1
 License:       2-Clause BSD license
 Group:         Development/Libraries/Tcl
-Source:        https://sites.google.com/site/ray2501/tcl-snappy/tcl.snappy_0.7.zip
+Source:        %{name}-%{version}.tar.gz
 URL:           https://sites.google.com/site/ray2501/tcl-snappy
 BuildRequires: autoconf
 BuildRequires: make
@@ -24,7 +24,7 @@ compression, or compatibility with any other compression library; instead,
 it aims for very high speeds and reasonable compression.
 
 %prep
-%setup -q -n %{name}
+%setup -q -n %{name}-%{version}
 
 %build
 export CC=g++

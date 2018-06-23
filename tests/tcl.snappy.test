@@ -14,9 +14,22 @@ test snappy_1_1 {
     Test: Snappy
 } -body {
     set result 0
-    set test0 "##### Hello snappy @@@@@, @@@@@ I am tickle #####"
+    set test0 "##### Hello snappy @@@@@, @@@@@ I am tickle, 12345 - tickle #####"
     set test1 [snappy::compress $test0]
     set test2 [snappy::decompress $test1]
+
+    if {[string equal $test0 $test2]==1} {
+        set result 1
+    }
+} -result {1}
+
+test snappy_1_2 {
+    Test: Snappy
+} -body {
+    set result 0
+    set test0 "##### Hello snappy @@@@@, @@@@@ I am tickle, 12345 - tickle #####"
+    set test1 [snappy::compressByte $test0]
+    set test2 [snappy::decompressByte $test1]
 
     if {[string equal $test0 $test2]==1} {
         set result 1

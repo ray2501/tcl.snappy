@@ -59,7 +59,9 @@ Implement commands
 =====
 
 snappy::compress - accepts a string to compress.  
-snappy::decompress - accepts a string to decompress.
+snappy::decompress - accepts a string to decompress.  
+snappy::compressByte - accepts a byte array to compress.  
+snappy::decompressByte - accepts a byte array to decompress.
 
 
 Example
@@ -74,3 +76,4 @@ Example
     if {[string equal $test0 $test2]==1} {
         puts "OK, get the same thing."
     }
+

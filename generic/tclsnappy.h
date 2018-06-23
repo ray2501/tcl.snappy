@@ -20,6 +20,9 @@ extern DLLEXPORT int	Snappy_Init(Tcl_Interp * interp);
 int  snappycompress (ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST obj[]);
 int  snappydecompress (ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST obj[]);
 
+int  snappycompressB (ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST obj[]);
+int  snappydecompressB (ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST obj[]);
+
 /*
  * end block for C++
  */
