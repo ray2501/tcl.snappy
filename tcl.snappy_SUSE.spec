@@ -4,7 +4,7 @@
 
 Name:          tcl.snappy
 Summary:       Tcl wrapper for snappy library
-Version:       0.8
+Version:       0.9
 Release:       0
 License:       2-Clause BSD license
 Group:         Development/Libraries/Tcl
