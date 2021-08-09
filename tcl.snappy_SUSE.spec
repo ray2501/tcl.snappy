@@ -12,6 +12,7 @@ Source:        %{name}-%{version}.tar.gz
 URL:           https://sites.google.com/site/ray2501/tcl-snappy
 BuildRequires: autoconf
 BuildRequires: make
+BuildRequires: gcc-c++
 BuildRequires: tcl-devel >= 8.4
 Requires:      tcl >= 8.4
 BuildRoot:     %{buildroot}
