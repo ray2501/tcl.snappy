@@ -33,13 +33,30 @@
 
 #include "snappy-stubs-internal.h"
 
+#if SNAPPY_HAVE_SSSE3
+// Please do not replace with <x86intrin.h> or with headers that assume more
+// advanced SSE versions without checking with all the OWNERS.
+#include <emmintrin.h>
+#include <tmmintrin.h>
+#endif
+
+#if SNAPPY_HAVE_NEON
+#include <arm_neon.h>
+#endif
+
+#if SNAPPY_HAVE_SSSE3 || SNAPPY_HAVE_NEON
+#define SNAPPY_HAVE_VECTOR_BYTE_SHUFFLE 1
+#else
+#define SNAPPY_HAVE_VECTOR_BYTE_SHUFFLE 0
+#endif
+
 namespace snappy {
 namespace internal {
 
 #if SNAPPY_HAVE_VECTOR_BYTE_SHUFFLE
 #if SNAPPY_HAVE_SSSE3
 using V128 = __m128i;
-#else
+#elif SNAPPY_HAVE_NEON
 using V128 = uint8x16_t;
 #endif
 
@@ -72,7 +89,7 @@ inline V128 V128_Shuffle(V128 input, V128 shuffle_mask) {
 
 inline V128 V128_DupChar(char c) { return _mm_set1_epi8(c); }
 
-#else
+#elif SNAPPY_HAVE_NEON
 inline V128 V128_Load(const V128* src) {
   return vld1q_u8(reinterpret_cast<const uint8_t*>(src));
 }
@@ -153,8 +170,9 @@ char* CompressFragment(const char* input,
 // loading from s2 + n.
 //
 // Separate implementation for 64-bit, little-endian cpus.
-#if !defined(SNAPPY_IS_BIG_ENDIAN) && \
-    (defined(__x86_64__) || defined(_M_X64) || defined(ARCH_PPC) || defined(ARCH_ARM))
+#if !SNAPPY_IS_BIG_ENDIAN && \
+    (defined(__x86_64__) || defined(_M_X64) || defined(ARCH_PPC) || \
+     defined(ARCH_ARM))
 static inline std::pair<size_t, bool> FindMatchLength(const char* s1,
                                                       const char* s2,
                                                       const char* s2_limit,
@@ -212,8 +230,9 @@ static inline std::pair<size_t, bool> FindMatchLength(const char* s1,
       uint64_t xorval = a1 ^ a2;
       int shift = Bits::FindLSBSetNonZero64(xorval);
       size_t matched_bytes = shift >> 3;
+      uint64_t a3 = UNALIGNED_LOAD64(s2 + 4);
 #ifndef __x86_64__
-      *data = UNALIGNED_LOAD64(s2 + matched_bytes);
+      a2 = static_cast<uint32_t>(xorval) == 0 ? a3 : a2;
 #else
       // Ideally this would just be
       //
@@ -224,13 +243,13 @@ static inline std::pair<size_t, bool> FindMatchLength(const char* s1,
       // use a conditional move (it's tuned to cut data dependencies). In this
       // case there is a longer parallel chain anyway AND this will be fairly
       // unpredictable.
-      uint64_t a3 = UNALIGNED_LOAD64(s2 + 4);
       asm("testl %k2, %k2\n\t"
           "cmovzq %1, %0\n\t"
           : "+r"(a2)
-          : "r"(a3), "r"(xorval));
-      *data = a2 >> (shift & (3 * 8));
+          : "r"(a3), "r"(xorval)
+          : "cc");
 #endif
+      *data = a2 >> (shift & (3 * 8));
       return std::pair<size_t, bool>(matched_bytes, true);
     } else {
       matched = 8;
@@ -252,16 +271,17 @@ static inline std::pair<size_t, bool> FindMatchLength(const char* s1,
       uint64_t xorval = a1 ^ a2;
       int shift = Bits::FindLSBSetNonZero64(xorval);
       size_t matched_bytes = shift >> 3;
-#ifndef __x86_64__
-      *data = UNALIGNED_LOAD64(s2 + matched_bytes);
-#else
       uint64_t a3 = UNALIGNED_LOAD64(s2 + 4);
+#ifndef __x86_64__
+      a2 = static_cast<uint32_t>(xorval) == 0 ? a3 : a2;
+#else
       asm("testl %k2, %k2\n\t"
           "cmovzq %1, %0\n\t"
           : "+r"(a2)
-          : "r"(a3), "r"(xorval));
-      *data = a2 >> (shift & (3 * 8));
+          : "r"(a3), "r"(xorval)
+          : "cc");
 #endif
+      *data = a2 >> (shift & (3 * 8));
       matched += matched_bytes;
       assert(matched >= 8);
       return std::pair<size_t, bool>(matched, false);
