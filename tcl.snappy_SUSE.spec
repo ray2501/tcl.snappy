@@ -9,7 +9,7 @@ Release:       0
 License:       BSD-2-Clause
 Group:         Development/Libraries/Tcl
 Source:        %{name}-%{version}.tar.gz
-URL:           https://sites.google.com/site/ray2501/tcl-snappy
+URL:           https://github.com/ray2501/tcl.snappy
 BuildRequires: autoconf
 BuildRequires: make
 BuildRequires: gcc-c++
