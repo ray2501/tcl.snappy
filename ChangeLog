@@ -1,6 +1,12 @@
 2023-12-14  Danilo Chang  <ray2501@gmail.com>
 
+     * Setup version to v0.12
      * Update tclconfig files
+
+2023-04-26  Danilo Chang  <ray2501@gmail.com>
+
+     * Setup version to v0.11
+     * Update snappy code base
 
 2021-08-09  Danilo Chang  <ray2501@gmail.com>
 
