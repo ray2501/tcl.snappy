@@ -44,10 +44,10 @@ extern "C" {
 }
 #endif
 
-int  snappycompress (ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST obj[])
+int  snappycompress (ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *const obj[])
 {
     char *snappy_string = NULL;
-    int snappy_len = 0;
+    Tcl_Size snappy_len = 0;
     char *output;
     size_t output_len = 0;
     Tcl_Obj *pResultStr = NULL;
@@ -83,10 +83,10 @@ int  snappycompress (ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Ob
     return TCL_OK;
 }
 
-int  snappydecompress (ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST obj[])
+int  snappydecompress (ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *const obj[])
 {
     char *snappy_string = NULL;
-    int snappy_len = 0;
+    Tcl_Size snappy_len = 0;
     char *output;
     size_t output_len = 0;
     Tcl_Obj *pResultStr = NULL;
@@ -126,10 +126,10 @@ int  snappydecompress (ClientData clientData, Tcl_Interp *interp, int objc, Tcl_
     return TCL_OK;
 }
 
-int  snappycompressB (ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST obj[])
+int  snappycompressB (ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *const obj[])
 {
     unsigned char *snappy_string = NULL;
-    int snappy_len = 0;
+    Tcl_Size snappy_len = 0;
     unsigned char *output;
     size_t output_len = 0;
     Tcl_Obj *pResultStr = NULL;
@@ -165,10 +165,10 @@ int  snappycompressB (ClientData clientData, Tcl_Interp *interp, int objc, Tcl_O
     return TCL_OK;
 }
 
-int  snappydecompressB (ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST obj[])
+int  snappydecompressB (ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *const obj[])
 {
     unsigned char *snappy_string = NULL;
-    int snappy_len = 0;
+    Tcl_Size snappy_len = 0;
     unsigned char *output;
     size_t output_len = 0;
     Tcl_Obj *pResultStr = NULL;
@@ -210,23 +210,23 @@ int  snappydecompressB (ClientData clientData, Tcl_Interp *interp, int objc, Tcl
 
 int Snappy_Init(Tcl_Interp *interp)
 {
-    if (Tcl_InitStubs(interp, "8.4", 0) == NULL) {
+    if (Tcl_InitStubs(interp, TCL_VERSION, 0) == NULL) {
 	return TCL_ERROR;
     }
     if (Tcl_PkgProvide(interp, PACKAGE_NAME, PACKAGE_VERSION) != TCL_OK) {
 	return TCL_ERROR;
     }
 
-    Tcl_CreateObjCommand(interp, "snappy::compress", (Tcl_ObjCmdProc *) snappycompress,
+    Tcl_CreateObjCommand(interp, "::snappy::compress", (Tcl_ObjCmdProc *) snappycompress,
 	   (ClientData)NULL, (Tcl_CmdDeleteProc *)NULL);
 
-    Tcl_CreateObjCommand(interp, "snappy::decompress", (Tcl_ObjCmdProc *) snappydecompress,
+    Tcl_CreateObjCommand(interp, "::snappy::decompress", (Tcl_ObjCmdProc *) snappydecompress,
        (ClientData)NULL, (Tcl_CmdDeleteProc *)NULL);
 
-    Tcl_CreateObjCommand(interp, "snappy::compressByte", (Tcl_ObjCmdProc *) snappycompressB,
+    Tcl_CreateObjCommand(interp, "::snappy::compressByte", (Tcl_ObjCmdProc *) snappycompressB,
 	   (ClientData)NULL, (Tcl_CmdDeleteProc *)NULL);
 
-    Tcl_CreateObjCommand(interp, "snappy::decompressByte", (Tcl_ObjCmdProc *) snappydecompressB,
+    Tcl_CreateObjCommand(interp, "::snappy::decompressByte", (Tcl_ObjCmdProc *) snappydecompressB,
        (ClientData)NULL, (Tcl_CmdDeleteProc *)NULL);
 
     return TCL_OK;
