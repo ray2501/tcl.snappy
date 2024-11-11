@@ -1,3 +1,7 @@
+2024-11-11  Danilo Chang  <ray2501@gmail.com>
+
+     * Update snappy code base
+
 2024-11-09  Danilo Chang  <ray2501@gmail.com>
 
      * Use Tcl_Size to replace int
